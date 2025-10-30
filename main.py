@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_file
 from flask_bcrypt import Bcrypt
 from loguru import logger
 import sys
@@ -37,6 +37,13 @@ def index():
     logger.info("Usuário acessou a rota principal '/'")
     return "Servidor Flask ativo! Verifique o terminal e o arquivo logs/app.log"
 
+@app.route("/logs")
+def ver_logs():
+    log_path = "logs/app.log"
+    if os.path.exists(log_path):
+        return send_file(log_path, mimetype="text/plain")
+    else:
+        return "Arquivo de log não encontrado.", 404
 
 # --- Log automático após inicialização ---
 def log_inicio():
